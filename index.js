@@ -1,34 +1,19 @@
 'use strict';
 
-// old: 
-var nodeStatic = require('node-static');
 var os = require('os');
+var nodeStatic = require('node-static');
+var http = require('http');
+var socketIO = require('socket.io');
 const port = process.env.PORT || 3000;
 
 var fileServer = new(nodeStatic.Server)();
-/*
-var http = require('http');
-var socketIO = require('socket.io');
-
 var app = http.createServer(function(req, res) {
   fileServer.serve(req, res);
 }).listen(port);
 
 var io = socketIO.listen(app);
-*/
 
-// new :
-const { createServer } = require("http");
-const { Server } = require("socket.io");
-
-const httpServer = createServer(function(req, res) {
-  fileServer.serve(req, res);
-});
-const io = new Server(httpServer, { /* options */ });
-
-httpServer.listen(port);
-
-io.on('connection', function(socket) {
+io.sockets.on('connection', function(socket) {
 
   // convenience function to log server messages on the client
   function log() {
